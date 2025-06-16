@@ -1,5 +1,8 @@
 const auditLogger = (req, res, next) => {
-  console.log(`[AUDIT] ${new Date().toISOString()} - ${req.method} ${req.originalUrl} - User: ${req.user ? req.user.id : 'Guest'}`);
+  const { method, originalUrl } = req;
+  const timestamp = new Date().toISOString();
+  const user = req.customerId || 'Guest';
+  console.log(`[${timestamp}] ${method} ${originalUrl} by ${user}`);
   next();
 };
 

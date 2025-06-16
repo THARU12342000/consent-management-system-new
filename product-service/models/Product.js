@@ -4,16 +4,23 @@ const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   description: {
     type: String,
-    default: ''
+    default: '',
   },
-  requiresConsent: {
+  price: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  available: {
     type: Boolean,
-    default: false
-  }
+    default: true,
+  },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
+
+module.exports = Product;

@@ -2,16 +2,14 @@ const express = require('express');
 const router = express.Router();
 const {
   registerCustomer,
-  loginCustomer,
-  getCustomerById
+  authCustomer,
+  getCustomerProfile,
 } = require('../controllers/customerController');
 const { protect } = require('../middleware/authMiddleware');
+const auditLogger = require('../middleware/auditLogger');
 
-// Public routes
-router.post('/register', registerCustomer);
-router.post('/login', loginCustomer);
-
-// Protected routes
-router.get('/:id', protect, getCustomerById);
+router.post('/register', auditLogger, registerCustomer);
+router.post('/login', auditLogger, authCustomer);
+router.get('/profile', auditLogger, protect, getCustomerProfile);
 
 module.exports = router;
