@@ -1,0 +1,19 @@
+.dashboard-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.dashboard-links {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dashboard-links a {
+  padding: 10px 20px;
+  background-color: #2e86de;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}

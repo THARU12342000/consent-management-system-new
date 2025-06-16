@@ -3,19 +3,23 @@ import React, { useState } from 'react';
 import api from '../../api/api';
 
 const AgreementForm = () => {
-  const [agreement, setAgreement] = useState('');
+  const [agreementText, setAgreementText] = useState('');
 
-  const submitAgreement = async () => {
-    await api.post('/agreements', { agreement });
-    alert('Agreement submitted');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await api.post('/agreements', { text: agreementText });
+      alert('Agreement submitted');
+    } catch (error) {
+      console.error('Error submitting agreement:', error);
+    }
   };
 
   return (
-    <div>
-      <h2>Agreement Form</h2>
-      <textarea onChange={e => setAgreement(e.target.value)} />
-      <button onClick={submitAgreement}>Submit</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <textarea value={agreementText} onChange={(e) => setAgreementText(e.target.value)} />
+      <button type="submit">Submit Agreement</button>
+    </form>
   );
 };
 

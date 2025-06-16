@@ -1,19 +1,17 @@
-// src/pages/Dashboard.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Dashboard = () => {
+export default function Dashboard() {
   return (
-    <div className="dashboard-container">
-      <h2>Welcome to Consent Management Dashboard</h2>
-
-      <div className="dashboard-links">
-        <Link to="/agreements">📝 Manage Agreements</Link>
-        <Link to="/products">📦 View Products</Link>
-        <Link to="/orders">🧾 Order Summary</Link>
-      </div>
+    <div>
+      <h1>Welcome to Consent Management System</h1>
+      <nav>
+        <ul>
+          <li><Link to="/products">View Products</Link></li>
+          <li><Link to="/agreements">Manage Agreements</Link></li>
+          <li><Link to="/orders">View Orders</Link></li>
+        </ul>
+      </nav>
     </div>
   );
-};
-
-export default Dashboard;
+}
