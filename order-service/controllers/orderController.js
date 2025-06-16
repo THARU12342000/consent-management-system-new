@@ -1,45 +1,52 @@
-// orderController.js
-
-const asyncHandler = require('express-async-handler');
 const Order = require('../models/Order');
 
-// @desc    Create new order
+// @desc    Place a new order
 // @route   POST /api/orders
 // @access  Private
-const createOrder = asyncHandler(async (req, res) => {
-  const { userId, products, totalPrice } = req.body;
+const placeOrder = async (req, res) => {
+  const { productId, orderDescription, address } = req.body;
+  const customerId = req.customerId;
 
-  if (!products || products.length === 0) {
-    res.status(400);
-    throw new Error('No order items');
+  if (!productId || !address) {
+    return res.status(400).json({ message: 'Product ID and address are required' });
   }
 
-  const order = new Order({
-    user: userId,
-    orderItems: products,
-    totalPrice,
-  });
+  try {
+    // Check if customer has given consent - this should be checked externally or via Agreement Service in real scenario
 
-  const createdOrder = await order.save();
+    // Create new order with status PENDING
+    const order = new Order({
+      customerId,
+      productId,
+      orderDescription: orderDescription || '',
+      address,
+      orderStatus: 'PLACED',
+      totalAmount: 0, // You can calculate based on product price if needed
+    });
 
-  res.status(201).json(createdOrder);
-});
+    const createdOrder = await order.save();
 
-// @desc    Get order by ID
-// @route   GET /api/orders/:id
+    res.status(201).json(createdOrder);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Get orders for a customer
+// @route   GET /api/orders
 // @access  Private
-const getOrderById = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id).populate('user', 'name email');
+const getOrders = async (req, res) => {
+  const customerId = req.customerId;
 
-  if (order) {
-    res.json(order);
-  } else {
-    res.status(404);
-    throw new Error('Order not found');
+  try {
+    const orders = await Order.find({ customerId });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
-});
+};
 
 module.exports = {
-  createOrder,
-  getOrderById,
+  placeOrder,
+  getOrders,
 };

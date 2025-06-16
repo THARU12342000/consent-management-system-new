@@ -2,18 +2,13 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const orderRoutes = require('./routes/orderRoutes');
-const auditLogger = require('./middleware/auditLogger');
-const cors = require('cors');
 
 dotenv.config();
-
 connectDB();
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
-app.use(auditLogger);
 
 app.use('/api/orders', orderRoutes);
 
@@ -22,7 +17,6 @@ app.use((req, res) => {
 });
 
 const PORT = process.env.PORT || 5003;
-
 app.listen(PORT, () => {
-  console.log(`Order service running on port ${PORT}`);
+  console.log(`Order Service running on port ${PORT}`);
 });

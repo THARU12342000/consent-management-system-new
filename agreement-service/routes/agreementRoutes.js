@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { getAllAgreements, createAgreement } = require('../controllers/agreementController');
-const { protect } = require('../middleware/authMiddleware');
+const {
+  getAgreementsByCustomer,
+  createOrUpdateAgreement,
+} = require('../controllers/agreementController');
+const auditLogger = require('../middleware/auditLogger');
 
-router.get('/', protect, getAllAgreements);
-router.post('/', protect, createAgreement);
+router.get('/customer/:customerId', auditLogger, getAgreementsByCustomer);
+router.post('/', auditLogger, createOrUpdateAgreement);
 
 module.exports = router;

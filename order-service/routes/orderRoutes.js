@@ -1,15 +1,10 @@
-// orderRoutes.js
 const express = require('express');
 const router = express.Router();
-
-const {
-  createOrder,
-  getOrderById,
-} = require('../controllers/orderController');
-
+const { placeOrder, getOrders } = require('../controllers/orderController');
 const { protect } = require('../middleware/authMiddleware');
+const auditLogger = require('../middleware/auditLogger');
 
-router.post('/', protect, createOrder);
-router.get('/:id', protect, getOrderById);
+router.post('/', auditLogger, protect, placeOrder);
+router.get('/', auditLogger, protect, getOrders);
 
 module.exports = router;

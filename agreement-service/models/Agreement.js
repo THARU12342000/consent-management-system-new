@@ -1,12 +1,31 @@
 const mongoose = require('mongoose');
 
 const agreementSchema = new mongoose.Schema({
-  agreementId: { type: String, required: true, unique: true },
-  name: { type: String, required: true },
-  status: { type: String, enum: ['draft', 'active', 'terminated'], default: 'draft' },
-  description: String,
-  startDate: Date,
-  endDate: Date
+  customerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Customer',
+  },
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Product',
+  },
+  consentGiven: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  consentDate: {
+    type: Date,
+    default: null,
+  },
+  termsVersion: {
+    type: String,
+    default: '1.0',
+  },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Agreement', agreementSchema);
+const Agreement = mongoose.model('Agreement', agreementSchema);
+
+module.exports = Agreement;
