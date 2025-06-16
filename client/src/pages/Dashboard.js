@@ -1,17 +1,26 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import ProductList from '../components/products/ProductList';
+import AgreementForm from '../components/agreements/AgreementForm';
+import OrderSummary from '../components/orders/OrderSummary';
 
-export default function Dashboard() {
+const Dashboard = ({ customer }) => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [consentGiven, setConsentGiven] = useState(false);
+
   return (
     <div>
-      <h1>Welcome to Consent Management System</h1>
-      <nav>
-        <ul>
-          <li><Link to="/products">View Products</Link></li>
-          <li><Link to="/agreements">Manage Agreements</Link></li>
-          <li><Link to="/orders">View Orders</Link></li>
-        </ul>
-      </nav>
+      <h1>Dashboard</h1>
+      <ProductList onSelectProduct={setSelectedProduct} />
+      {selectedProduct && customer && (
+        <AgreementForm
+          customerId={customer._id}
+          productId={selectedProduct._id}
+          onConsentGiven={setConsentGiven}
+        />
+      )}
+      {consentGiven && <OrderSummary />}
     </div>
   );
-}
+};
+
+export default Dashboard;

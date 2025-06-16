@@ -1,13 +1,27 @@
-
-// File: client/src/components/common/Navbar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { getUserFromToken, removeToken } from '../../utils/auth';
 
-const Navbar = () => (
-  <nav>
-    <Link to="/">Home</Link>
-    <Link to="/dashboard">Dashboard</Link>
-  </nav>
-);
+const Navbar = ({ onLogout }) => {
+  const user = getUserFromToken();
+
+  const handleLogout = () => {
+    removeToken();
+    onLogout();
+  };
+
+  return (
+    <nav>
+      <h1>Consent Management</h1>
+      {user ? (
+        <div>
+          <span>Welcome, {user.id}</span>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      ) : (
+        <span>Please login</span>
+      )}
+    </nav>
+  );
+};
 
 export default Navbar;
