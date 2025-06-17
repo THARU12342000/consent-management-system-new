@@ -1,19 +1,20 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
-const cors = require('cors');
 
 dotenv.config();
 connectDB();
 
 const app = express();
 
-app.use(cors()); // Enable CORS
-app.use(express.json());
+app.use(cors());               // Enable CORS for all origins
+app.use(express.json());       // Parse JSON request bodies
 
-app.use('/api/products', productRoutes);
+app.use('/api/products', productRoutes);  // Register product routes
 
+// 404 handler - must be last middleware
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
