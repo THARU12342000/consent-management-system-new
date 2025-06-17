@@ -9,11 +9,13 @@ connectDB();
 
 const app = express();
 
-app.use(cors()); // <-- Add this line to enable CORS
+app.use(cors());
 app.use(express.json());
 
+// Register customer routes BEFORE 404 handler
 app.use('/api/customers', customerRoutes);
 
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
